@@ -1,13 +1,14 @@
 package com.example.StartupRush.service;
 
-import com.example.StartupRush.model.Battle;
-import com.example.StartupRush.model.Round;
-import com.example.StartupRush.model.Startup;
-import com.example.StartupRush.model.Tournament;
+import com.example.StartupRush.dto.EventsDTO;
+import com.example.StartupRush.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.StartupRush.model.EventType.*;
 
 @Service
 public class TournamentService {
@@ -41,11 +42,6 @@ public class TournamentService {
         return null;
     }
 
-    //funcao pra iniciar o torneio
-    //  - verifica se o numero de startups eh valida
-    //  - se sim chama a funcao que faz o chaveamneto de forma aleatoria
-    //  - se nao da erro e pede pra cadastrar mais startups
-
     public boolean startRound(){
         if(!List.of(4, 6, 8).contains(tournament.getStartups().size())){
             return false;
@@ -67,5 +63,47 @@ public class TournamentService {
             round.add(battle);
         }
         tournament.addRound(round);
+    }
+
+    public Startup battleWinner(Round round,int battleId,EventsDTO events){
+        Battle battle = round.getBattle(battleId);
+        if(battle.getWinner() != null){
+            return null;
+        }
+        Event eventsStartup1 = new Event(battle.getStartup1(),events.getEventsStartup1());
+        Event eventsStartup2 = new Event(battle.getStartup2(),events.getEventsStartup2());
+        Event[] e = {eventsStartup1, eventsStartup2};
+        battle.setEvents(e);
+        updatePoints(battle.getStartup1(),events.getEventsStartup1());
+        updatePoints(battle.getStartup2(),events.getEventsStartup2());
+
+        if(battle.getStartup1().getPoints() > battle.getStartup2().getPoints()){
+            battle.setWinner(battle.getStartup1());
+            return battle.getStartup1();
+        }else{
+            battle.setWinner(battle.getStartup2());
+            return battle.getStartup2();
+        }
+    }
+
+    private void updatePoints(Startup startup, Map<EventType,Boolean> events){
+        int points = 0;
+        if(events.get(PITCH_CONVINCENTE)){
+            points += 6;
+        }
+        if(events.get(PRODUTO_BUGS)){
+            points -= 4;
+        }
+        if(events.get(TRACAO_USUARIOS)){
+            points += 3;
+        }
+        if(events.get(INVESTIDOR_IRRITADO)){
+            points -= 6;
+        }
+        if(events.get(FAKE_NEWS)){
+            points -= 8;
+        }
+
+        startup.setPoints(startup.getPoints() + points);
     }
 }

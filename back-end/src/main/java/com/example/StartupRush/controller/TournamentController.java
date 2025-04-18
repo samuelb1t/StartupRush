@@ -1,6 +1,8 @@
 package com.example.StartupRush.controller;
 
+import com.example.StartupRush.dto.EventsDTO;
 import com.example.StartupRush.model.Battle;
+import com.example.StartupRush.model.Event;
 import com.example.StartupRush.model.Round;
 import com.example.StartupRush.model.Startup;
 import com.example.StartupRush.service.TournamentService;
@@ -35,7 +37,6 @@ public class TournamentController {
         return tournamentService.getBattles(tournamentService.getRound(id));
     }
 
-
     @PostMapping
     public ResponseEntity<String> addStartup(@RequestBody Startup startup){
         if(tournamentService.addStartup(startup)){
@@ -52,5 +53,14 @@ public class TournamentController {
         }else{
             return ResponseEntity.badRequest().body("Número de startups no torneio inválido");
         }
+    }
+
+    @PostMapping("/round/{roundId}/{battleId}/events")
+    public ResponseEntity<String> addEvents(@PathVariable int roundId,@PathVariable int battleId,@RequestBody EventsDTO events){
+        Startup winner = tournamentService.battleWinner(tournamentService.getRound(roundId),battleId,events);
+        if(winner == null){
+            return ResponseEntity.badRequest().body("A batalha já aconteceu");
+        }
+        return ResponseEntity.ok("A startup vencedora dessa batalha foi: " + winner.getName());
     }
 }

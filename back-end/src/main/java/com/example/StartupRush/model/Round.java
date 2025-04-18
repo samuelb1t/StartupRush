@@ -17,4 +17,13 @@ public class Round {
     public void add(Battle battle){
         battles.add(battle);
     }
+
+    public Battle getBattle(int id){
+        for (Battle battle : battles) {
+            if(battle.getId() == id){
+                return battle;
+            }
+        }
+        return null;
+    }
 }

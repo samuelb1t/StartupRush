@@ -10,4 +10,5 @@ public class Startup {
     private String name;
     private String slogan;
     private int year;
+    private int points;
 }
