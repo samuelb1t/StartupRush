@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class Tournament {
     private ArrayList<Startup> startups = new ArrayList<>();
     private ArrayList<Round> rounds = new ArrayList<>();
+    private boolean isFinal = false;
 
     public void addRound(Round round){
         rounds.add(round);
     }
-
 
 }

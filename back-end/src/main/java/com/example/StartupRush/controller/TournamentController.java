@@ -61,6 +61,9 @@ public class TournamentController {
         if(winner == null){
             return ResponseEntity.badRequest().body("A batalha já aconteceu");
         }
+        if(tournamentService.isFinal()){
+            return ResponseEntity.ok("A startup campeã do torneio foi: " + winner.getName());
+        }
         return ResponseEntity.ok("A startup vencedora dessa batalha foi: " + winner.getName());
     }
 }
