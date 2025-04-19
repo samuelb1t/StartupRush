@@ -1,8 +1,11 @@
+import Bg from "./components/bg"
 
 function App() {
 
   return (
-    <h1 className="text-9xl">Teste</h1>
+    <Bg>
+      <h1 className="text-white">Teste</h1>
+    </Bg>
   )
 }
 
