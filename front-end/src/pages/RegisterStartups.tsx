@@ -1,4 +1,4 @@
-import Bg from "../components/bg";
+import Bg from "../components/Bg";
 import Input from "../components/Input";
 import Button1 from "../components/Button1";
 import Button2 from "../components/Button2";
@@ -7,19 +7,52 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterStartups() {
   const [notification, setNotification] = useState(false);
-  const [message, setMessage] = useState(false);
+  const [error, setError] = useState(false);
+  const [cont,setCont] = useState(0);
   const navigate = useNavigate();
 
+  function handleNotification(){
+    setNotification(true);
+    setTimeout(() => {
+      setNotification(false);
+    }, 3000);
+  }
+
+  function handleError(){
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+    }, 3000);
+  }
+
   async function handleRegister() {
+    console.log(cont)
     const name = (document.getElementById("nome") as HTMLInputElement)?.value;
     const slogan = (document.getElementById("slogan") as HTMLInputElement)
       ?.value;
     const ano = +(document.getElementById("ano") as HTMLInputElement)?.value;
 
     if (!(name && slogan && ano)) {
+      const mensagem = document.getElementById("mensagem");
+      if (mensagem) {mensagem.innerText = "Preencha todos os campos!";}
+      handleNotification();
+      handleError()
       return;
     }
-    if (ano < 1500 && ano > 2025) {
+    if (ano < 1500 || ano > 2025) {
+      const mensagem = document.getElementById("mensagem");
+      if(mensagem){mensagem.innerText = "Ano inválido!"}
+      handleNotification();
+      handleError()
+      return;
+    }
+
+    if(cont == 8){
+      console.log("zz")
+      const mensagem = document.getElementById("mensagem");
+      if(mensagem){mensagem.innerText = "Número máximo de startups atingido!"}
+      handleNotification();
+      handleError()
       return;
     }
 
@@ -39,18 +72,15 @@ function RegisterStartups() {
         body: JSON.stringify(startup),
       });
       if (response.ok) {
-        console.log(response);
-        setNotification(true);
-        setTimeout(() => {
-          setNotification(false);
-        }, 4000);
+        const mensagem = document.getElementById("mensagem");
+        if(mensagem){mensagem.innerText = "Startup cadastrada com sucesso!"}
+        setCont(x => x+1);
+        handleNotification()
       } else {
-        setMessage(true);
-        setNotification(true);
-        setTimeout(() => {
-          setNotification(false);
-        }, 4000);
-        throw new Error("Erro ao cadastrar startup");
+        const mensagem = document.getElementById("mensagem");
+        if(mensagem){mensagem.innerText = "Já existe uma startup com esse nome!"}
+        handleNotification()
+        handleError()
       }
     } catch (error) {
       console.error("Erro: " + error);
@@ -102,7 +132,7 @@ function RegisterStartups() {
               placeholder="Digite o ano de fundação da Startup"
             ></Input>
             <Button1 onClick={handleRegister}></Button1>
-            <Button2 onClick={handleMatches}></Button2>
+            <Button2 text="Iniciar Startup Rush" onClick={handleMatches}></Button2>
           </section>
         </div>
         {/* 
@@ -114,12 +144,14 @@ function RegisterStartups() {
           className="absolute bottom-15 left-24 bg-green-800 text-white text-xl px-4 py-2 rounded-2xl"
           style={{
             display: notification ? "block" : "none",
-            backgroundColor: message ? "#A40003" : "#016630",
+            backgroundColor: error ? "#A40003" : "#016630",
           }}
+          id="mensagem"
         >
-          {message
+          {/* {message
             ? "Erro no cadastro da startup"
-            : "Startup cadastrada com sucesso!"}
+            : "Startup cadastrada com sucesso!"} */}
+            
         </div>
       </div>
     </Bg>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Button2({ onClick }: { onClick: () => void }) {
+function Button2({ onClick,text }: { onClick: () => void,text:string }) {
   const [hover, setHover] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ function Button2({ onClick }: { onClick: () => void }) {
       }}
       onClick={onClick}
     >
-      Iniciar Torneio
+      {text}
     </button>
   );
 }
