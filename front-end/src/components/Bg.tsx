@@ -1,9 +1,11 @@
 import { ReactElement } from "react";
 
-function Bg({children}:{children:ReactElement}) {
-  return <div className="h-screen w-screen bg-gradient-to-br from-[#0E1129] from-30% to-[#1D2140]">
-    {children}
-  </div>;
+function Bg({ children }: { children: ReactElement }) {
+  return (
+    <div className="h-screen w-screen bg-gradient-to-br from-[#0E1129] from-30% to-[#1D2140] px-24 py-16">
+      {children}
+    </div>
+  );
 }
 
 export default Bg;
