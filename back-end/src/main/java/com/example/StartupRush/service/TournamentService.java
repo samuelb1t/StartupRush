@@ -1,6 +1,7 @@
 package com.example.StartupRush.service;
 
 import com.example.StartupRush.dto.EventsDTO;
+import com.example.StartupRush.dto.TournamentDTO;
 import com.example.StartupRush.model.*;
 import com.example.StartupRush.repository.TournamentRepository;
 import com.example.StartupRush.repository.TournamentResultRepository;
@@ -225,5 +226,13 @@ public class TournamentService {
 
             tournamentResultRepository.save(result);
         }
+    }
+
+    public List<Tournament> getAllTournaments(){
+        return tournamentRepository.findAll();
+    }
+
+    public List<TournamentResult> getTournamentStats(long id){
+        return tournamentResultRepository.findByTournamentId(id);
     }
 }

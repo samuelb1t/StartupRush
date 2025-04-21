@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,6 +41,16 @@ public class TournamentController {
     @GetMapping("/stats")
     public Map<String, StartupStats> getStats(){
         return tournamentService.getStats();
+    }
+
+    @GetMapping("/tournaments")
+    public List<Tournament> getAllTournaments(){
+        return tournamentService.getAllTournaments();
+    }
+
+    @GetMapping("/{id}")
+    public List<TournamentResult> getTournamentStats(@PathVariable long id){
+        return tournamentService.getTournamentStats(id);
     }
 
     @CrossOrigin(origins = "http://localhost:5173")

@@ -57,4 +57,40 @@ public class TournamentResult {
     public void setFakeNews(int fakeNews) {
         this.fakeNews = fakeNews;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getStartupName() {
+        return startupName;
+    }
+
+    public long getTournamentId() {
+        return tournamentId;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getPitchs() {
+        return pitchs;
+    }
+
+    public int getBugs() {
+        return bugs;
+    }
+
+    public int getTracoes() {
+        return tracoes;
+    }
+
+    public int getInvestidoresIrritados() {
+        return investidoresIrritados;
+    }
+
+    public int getFakeNews() {
+        return fakeNews;
+    }
 }
