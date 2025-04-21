@@ -125,11 +125,20 @@ function Battles() {
         }
       }
       setBattle(false);
+
+      inputs1.forEach((input)=>{
+        (input as HTMLInputElement).checked = false;
+      })
+      inputs2.forEach((input)=>{
+        (input as HTMLInputElement).checked = false;
+      })
+
       const battlesDiv = document.getElementById("battlesDiv");
       if(battlesDiv?.children.length == 1){
         navigate("/stats")
+      }else{
+        await newBattles();
       }
-      await newBattles();
     }
   }
 

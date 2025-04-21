@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import Bg from "../components/Bg";
 import { useEffect, useState } from "react";
+import Button2 from "../components/Button2";
+import { useNavigate } from "react-router-dom";
 
 type Startup = {
   name: string;
@@ -35,10 +37,12 @@ type MergedData = {
 
 function Stats() {
   const [rows, setRows] = useState<MergedData[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getStats() {
       try {
+        console.log("aaaaaaaaaaa")
         const responseStats = await fetch("http://localhost:8080/tournament/stats");
         const stats: Record<string, Stat> = await responseStats.json();
 
@@ -103,6 +107,9 @@ function Stats() {
             </TableBody>
           </Table>
         </TableContainer>
+        <div className="self-center mt-12">
+          <Button2 onClick={()=>{navigate("/")}} text="Voltar para o menu"></Button2>
+        </div>
       </div>
     </Bg>
   );
