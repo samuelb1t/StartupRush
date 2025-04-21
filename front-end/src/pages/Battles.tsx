@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import Bg from "../components/Bg";
 import Button2 from "../components/Button2";
 import Checkbox from "../components/Checkbox";
+import { useNavigate } from "react-router-dom";
 
 function Battles() {
   const [battles, setBattles] = useState<any[]>([]);
   const [battle, setBattle] = useState(false);
+  const navigate = useNavigate();
 
   async function getBattles() {
     const res = await fetch("http://localhost:8080/tournament/battles", {
@@ -113,7 +115,7 @@ function Battles() {
     if (response.ok) {
       const winner = await response.text();
       const div = document.getElementById(`id-${id}`);
-      const n1 = div?.children[0].innerText;
+      const n1 = (div?.children[0] as HTMLElement).innerText;
       if (div && winner) {
         div.removeChild(div.children[1]);
         if (n1 == winner) {
@@ -123,6 +125,10 @@ function Battles() {
         }
       }
       setBattle(false);
+      const battlesDiv = document.getElementById("battlesDiv");
+      if(battlesDiv?.children.length == 1){
+        navigate("/stats")
+      }
       await newBattles();
     }
   }

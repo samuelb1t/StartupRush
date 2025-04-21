@@ -1,5 +1,6 @@
 import RegisterStartups from "../pages/RegisterStartups";
 import Battles from "../pages/Battles";
+import Stats from "../pages/Stats";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const AppRoutes = () => {
@@ -8,6 +9,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<RegisterStartups />}></Route>
         <Route path="/battles" element={<Battles />}></Route>
+        <Route path="/stats" element={<Stats />}></Route>
       </Routes>
     </Router>
   );
