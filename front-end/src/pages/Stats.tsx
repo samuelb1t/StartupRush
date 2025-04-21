@@ -32,7 +32,7 @@ type MergedData = {
   bugProduto: number;
   tracaoUsuarios: number;
   investidorIrritado: number;
-  fakeNews: number;
+  fakeNews: number; 
 };
 
 function Stats() {
