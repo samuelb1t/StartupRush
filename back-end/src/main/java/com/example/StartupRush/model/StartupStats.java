@@ -19,4 +19,24 @@ public class StartupStats {
             case FAKE_NEWS: fakeNews++; break;
         }
     }
+
+    public int getPitchs() {
+        return pitchs;
+    }
+
+    public int getBugs() {
+        return bugs;
+    }
+
+    public int getTracoes() {
+        return tracoes;
+    }
+
+    public int getInvestidoresIrritados() {
+        return investidoresIrritados;
+    }
+
+    public int getFakeNews() {
+        return fakeNews;
+    }
 }

@@ -3,19 +3,46 @@ package com.example.StartupRush.service;
 import com.example.StartupRush.dto.EventsDTO;
 import com.example.StartupRush.model.*;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-
 import static com.example.StartupRush.model.EventType.*;
 
 @Service
 public class TournamentService {
-    private final Tournament tournament = new Tournament();
-    private Map<Startup,StartupStats> stats = new HashMap<>();
+    private final ArrayList<Tournament> tournaments = new ArrayList<>();
+    private Tournament tournament;
+
+    private Map<String,StartupStats> stats = new HashMap<>();
+
+    public Map<String, StartupStats> getStats() {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        return stats;
+    }
+
+    public boolean startNewTournament(){
+        if(tournament == null){
+            tournament = new Tournament();
+            return true;
+        }else{
+            if(tournament.isFinished()){
+                tournaments.add(tournament);
+                tournament = new Tournament();
+                stats.clear();
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     public boolean addStartup(Startup startup){
-        if(tournament.getStartups().size() >= 8){
-            return false;
+        for(Startup s : tournament.getStartups()){
+            if(s.getName().equals(startup.getName())){
+                return false;
+            }else{
+                if(tournament.getStartups().size() >= 8){
+                    return false;
+                }
+            }
         }
         return tournament.getStartups().add(startup);
     }
@@ -31,8 +58,6 @@ public class TournamentService {
     public ArrayList<Battle> getBattles(Round round){
         return round.getBattles();
     }
-
-    public boolean isFinal(){return tournament.isFinal();}
 
     public Round getRound(int id) {
         for (Round round : tournament.getRounds()) {
@@ -55,7 +80,6 @@ public class TournamentService {
                     return false;
                 }
             }
-            if(r.getBattles().size() == 2){tournament.setFinal(true);}
         }
         Round round = new Round();
         createMatches(round);
@@ -82,7 +106,8 @@ public class TournamentService {
         tournament.addRound(round);
     }
 
-    public Startup battleWinner(Round round,int battleId,EventsDTO events){
+    public Startup battleWinner(int battleId,EventsDTO events){
+        Round round = tournament.getRounds().getLast();
         Battle battle = round.getBattle(battleId);
         if(battle.getWinner() != null){
             return null;
@@ -94,18 +119,20 @@ public class TournamentService {
         updatePoints(battle.getStartup1(),events.getEventsStartup1());
         updatePoints(battle.getStartup2(),events.getEventsStartup2());
 
+        if(round.getBattles().size() == 1){tournament.setFinished(true);}
+
         if(battle.getStartup1().getPoints() > battle.getStartup2().getPoints()){
             battle.setWinner(battle.getStartup1());
             battle.getStartup1().setPoints(battle.getStartup1().getPoints() + 30);
-            if(tournament.isFinal()){
-                getStats();
+            if(tournament.isFinished()){
+                createStats();
             }
             return battle.getStartup1();
         }else if(battle.getStartup1().getPoints() < battle.getStartup2().getPoints()){
             battle.setWinner(battle.getStartup2());
             battle.getStartup2().setPoints(battle.getStartup2().getPoints() + 30);
-            if(tournament.isFinal()){
-                getStats();
+            if(tournament.isFinished()){
+                createStats();
             }
             return battle.getStartup2();
         }else{
@@ -138,30 +165,36 @@ public class TournamentService {
         if(random == 0){
             battle.setWinner(battle.getStartup1());
             battle.getStartup1().setPoints(battle.getStartup1().getPoints() + 32);
-            if(tournament.isFinal()){
-                getStats();
+            if(tournament.isFinished()){
+                createStats();
             }
             return battle.getStartup1();
         }else{
             battle.setWinner(battle.getStartup2());
             battle.getStartup2().setPoints(battle.getStartup2().getPoints() + 32);
-            if(tournament.isFinal()){
-                getStats();
+            if(tournament.isFinished()){
+                createStats();
             }
             return battle.getStartup2();
         }
     }
 
-    public void getStats(){
+    public void createStats(){
+        for(Startup s: tournament.getStartups()){
+            stats.put(s.getName(),new StartupStats());
+        }
         for(Round round : tournament.getRounds()){
             for(Battle battle : round.getBattles()){
                 for(EventType type : EventType.values()){
                     if(battle.getEvents()[0].getEvents().get(type)){
-                        System.out.println("testeeeeeeeeeeeeeee");
-
+                        stats.get(battle.getStartup1().getName()).increment(type);
+                    }
+                    if(battle.getEvents()[1].getEvents().get(type)){
+                        stats.get(battle.getStartup2().getName()).increment(type);
                     }
                 }
             }
         }
+        tournament.setStats(stats);
     }
 }

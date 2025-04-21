@@ -8,8 +8,15 @@ import lombok.Getter;
 import java.util.Map;
 
 @AllArgsConstructor
-@Getter
 public class EventsDTO {
     private Map<EventType, Boolean> eventsStartup1;
     private Map<EventType, Boolean> eventsStartup2;
+
+    public Map<EventType, Boolean> getEventsStartup1() {
+        return eventsStartup1;
+    }
+
+    public Map<EventType, Boolean> getEventsStartup2() {
+        return eventsStartup2;
+    }
 }
