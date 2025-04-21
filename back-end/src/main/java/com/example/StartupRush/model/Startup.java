@@ -8,6 +8,11 @@ import lombok.Setter;
 @Getter @Setter
 public class Startup {
 
+    private String name;
+    private String slogan;
+    private int year;
+    private int points;
+
     public String getName() {
         return name;
     }
@@ -39,9 +44,4 @@ public class Startup {
     public void setPoints(int points) {
         this.points = points;
     }
-
-    private String name;
-    private String slogan;
-    private int year;
-    private int points;
 }

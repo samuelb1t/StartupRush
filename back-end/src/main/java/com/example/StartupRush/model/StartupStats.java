@@ -1,14 +1,12 @@
 package com.example.StartupRush.model;
 
-import lombok.Getter;
-
-@Getter
 public class StartupStats {
     private int pitchs = 0;
     private int bugs = 0;
     private int tracoes = 0;
     private int investidoresIrritados = 0;
     private int fakeNews = 0;
+    private int points;
 
     public void increment(EventType type) {
         switch (type) {
@@ -38,5 +36,13 @@ public class StartupStats {
 
     public int getFakeNews() {
         return fakeNews;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

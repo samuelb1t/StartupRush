@@ -2,12 +2,21 @@ package com.example.StartupRush.service;
 
 import com.example.StartupRush.dto.EventsDTO;
 import com.example.StartupRush.model.*;
+import com.example.StartupRush.repository.TournamentRepository;
+import com.example.StartupRush.repository.TournamentResultRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import static com.example.StartupRush.model.EventType.*;
 
 @Service
 public class TournamentService {
+    @Autowired
+    private TournamentResultRepository tournamentResultRepository;
+
+    @Autowired
+    private TournamentRepository tournamentRepository;
+
     private final ArrayList<Tournament> tournaments = new ArrayList<>();
     private Tournament tournament;
 
@@ -24,6 +33,7 @@ public class TournamentService {
             return true;
         }else{
             if(tournament.isFinished()){
+
                 tournaments.add(tournament);
                 tournament = new Tournament();
                 stats.clear();
@@ -182,6 +192,7 @@ public class TournamentService {
     public void createStats(){
         for(Startup s: tournament.getStartups()){
             stats.put(s.getName(),new StartupStats());
+            stats.get(s.getName()).setPoints(s.getPoints());
         }
         for(Round round : tournament.getRounds()){
             for(Battle battle : round.getBattles()){
@@ -196,5 +207,23 @@ public class TournamentService {
             }
         }
         tournament.setStats(stats);
+        tournament = tournamentRepository.save(tournament);
+
+        for (Map.Entry<String, StartupStats> entry : stats.entrySet()) {
+            String startupName = entry.getKey();
+            StartupStats stat = entry.getValue();
+
+            TournamentResult result = new TournamentResult();
+            result.setStartupName(startupName);
+            result.setPoints(stat.getPoints());
+            result.setPitchs(stat.getPitchs());
+            result.setBugs(stat.getBugs());
+            result.setTracoes(stat.getTracoes());
+            result.setInvestidoresIrritados(stat.getInvestidoresIrritados());
+            result.setFakeNews(stat.getFakeNews());
+            result.setTournamentId(tournament.getId());
+
+            tournamentResultRepository.save(result);
+        }
     }
 }
