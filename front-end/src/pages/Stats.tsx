@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 type Startup = {
   name: string;
   points: number;
+  slogan: string;
 };
 
 type Stat = {
@@ -27,6 +28,7 @@ type Stat = {
 
 type MergedData = {
   name: string;
+  slogan:string;
   points: number;
   pitchConvincente: number;
   bugProduto: number;
@@ -42,7 +44,6 @@ function Stats() {
   useEffect(() => {
     async function getStats() {
       try {
-        console.log("aaaaaaaaaaa")
         const responseStats = await fetch("http://localhost:8080/tournament/stats");
         const stats: Record<string, Stat> = await responseStats.json();
 
@@ -53,6 +54,7 @@ function Stats() {
           const stat = stats[startup.name];
           return {
             name: startup.name,
+            slogan: startup.slogan,
             points: startup.points,
             pitchConvincente: stat?.pitchs || 0,
             bugProduto: stat?.bugs || 0,
@@ -63,6 +65,14 @@ function Stats() {
         });
 
         mergedData.sort((a, b) => b.points - a.points);
+
+        const name = document.getElementById("name");
+        const slogan = document.getElementById("slogan")
+
+        if(name && slogan){
+          name.innerText = "Startup campeã: " + mergedData[0].name;
+          slogan.innerText = "Slogan: " + mergedData[0].slogan;
+        }
 
         setRows(mergedData);
       } catch (error) {
@@ -77,6 +87,8 @@ function Stats() {
     <Bg>
       <div className="h-full flex flex-col">
         <h1 className="text-white text-5xl mb-12">Startup Rush</h1>
+        <h3 id="name" className="text-white text-3xl text-center"></h3>
+        <h4 id="slogan" className="text-white text-3xl mb-8 text-center"></h4>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
