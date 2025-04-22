@@ -8,17 +8,17 @@ import { useNavigate } from "react-router-dom";
 function RegisterStartups() {
   const [notification, setNotification] = useState(false);
   const [error, setError] = useState(false);
-  const [cont,setCont] = useState(0);
+  const [cont, setCont] = useState(0);
   const navigate = useNavigate();
 
-  function handleNotification(){
+  function handleNotification() {
     setNotification(true);
     setTimeout(() => {
       setNotification(false);
     }, 3000);
   }
 
-  function handleError(){
+  function handleError() {
     setError(true);
     setTimeout(() => {
       setError(false);
@@ -26,7 +26,6 @@ function RegisterStartups() {
   }
 
   async function handleRegister() {
-    console.log(cont)
     const name = (document.getElementById("nome") as HTMLInputElement)?.value;
     const slogan = (document.getElementById("slogan") as HTMLInputElement)
       ?.value;
@@ -34,25 +33,30 @@ function RegisterStartups() {
 
     if (!(name && slogan && ano)) {
       const mensagem = document.getElementById("mensagem");
-      if (mensagem) {mensagem.innerText = "Preencha todos os campos!";}
+      if (mensagem) {
+        mensagem.innerText = "Preencha todos os campos!";
+      }
       handleNotification();
-      handleError()
+      handleError();
       return;
     }
     if (ano < 1500 || ano > 2025) {
       const mensagem = document.getElementById("mensagem");
-      if(mensagem){mensagem.innerText = "Ano inválido!"}
+      if (mensagem) {
+        mensagem.innerText = "Ano inválido!";
+      }
       handleNotification();
-      handleError()
+      handleError();
       return;
     }
 
-    if(cont == 8){
-      console.log("zz")
+    if (cont == 8) {
       const mensagem = document.getElementById("mensagem");
-      if(mensagem){mensagem.innerText = "Número máximo de startups atingido!"}
+      if (mensagem) {
+        mensagem.innerText = "Número máximo de startups atingido!";
+      }
       handleNotification();
-      handleError()
+      handleError();
       return;
     }
 
@@ -72,18 +76,37 @@ function RegisterStartups() {
         body: JSON.stringify(startup),
       });
       if (response.ok) {
+        clearInputs();
         const mensagem = document.getElementById("mensagem");
-        if(mensagem){mensagem.innerText = "Startup cadastrada com sucesso!"}
-        setCont(x => x+1);
-        handleNotification()
+        if (mensagem) {
+          mensagem.innerText = "Startup cadastrada com sucesso!";
+        }
+        setCont((x) => x + 1);
+        handleNotification();
       } else {
         const mensagem = document.getElementById("mensagem");
-        if(mensagem){mensagem.innerText = "Já existe uma startup com esse nome!"}
-        handleNotification()
-        handleError()
+        if (mensagem) {
+          mensagem.innerText = "Já existe uma startup com esse nome!";
+        }
+        handleNotification();
+        handleError();
       }
     } catch (error) {
       console.error("Erro: " + error);
+    }
+  }
+
+  function clearInputs() {
+    const name = document.getElementById("nome");
+    const slogan = document.getElementById("slogan");
+    const ano = document.getElementById("ano");
+    console.log("aaaaaa");
+    if (name && slogan && ano) {
+      console.log("bbbbb");
+
+      (name as HTMLInputElement).value = "";
+      (slogan as HTMLInputElement).value = "";
+      (ano as HTMLInputElement).value = "";
     }
   }
 
@@ -100,10 +123,17 @@ function RegisterStartups() {
         method: "GET",
       });
       if (res.ok) {
-        const battles = await res.json()
+        const battles = await res.json();
         console.log(battles);
-        navigate("/battles",{ state: { battles } });
+        navigate("/battles", { state: { battles } });
       }
+    }else{
+      const mensagem = document.getElementById("mensagem");
+      if (mensagem) {
+        mensagem.innerText = "Número mínimo de startup não foi cadastrado!";
+      }
+      handleNotification();
+      handleError();
     }
   }
 
@@ -132,14 +162,12 @@ function RegisterStartups() {
               placeholder="Digite o ano de fundação da Startup"
             ></Input>
             <Button1 onClick={handleRegister}></Button1>
-            <Button2 text="Iniciar Startup Rush" onClick={handleMatches}></Button2>
+            <Button2
+              text="Iniciar Startup Rush"
+              onClick={handleMatches}
+            ></Button2>
           </section>
         </div>
-        {/* 
-        <div id="regiteredDiv" className="pl-24 mt-16">
-          <h3 className="text-white text-2xl mb-4">Startups cadastradas:</h3>
-          <Registered></Registered>
-        </div> */}
         <div
           className="absolute bottom-15 left-24 bg-green-800 text-white text-xl px-4 py-2 rounded-2xl"
           style={{
@@ -148,10 +176,7 @@ function RegisterStartups() {
           }}
           id="mensagem"
         >
-          {/* {message
-            ? "Erro no cadastro da startup"
-            : "Startup cadastrada com sucesso!"} */}
-            
+
         </div>
       </div>
     </Bg>

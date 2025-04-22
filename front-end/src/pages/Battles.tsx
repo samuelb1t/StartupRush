@@ -173,7 +173,7 @@ function Battles() {
                   className="text-2xl text-[#7C8BA1]"
                 ></span>
                 <span id="pontosStartup1" className="text-2xl mb-4"></span>
-                <Checkbox id="s1"></Checkbox>
+                <Checkbox id="s1" l1="a1" l2="a2" l3="a3" l4="a4" l5="a5"></Checkbox>
               </div>
               <div className="flex flex-col gap-2 justify-self-start">
                 <span id="nameStartup2" className="text-3xl"></span>
@@ -183,7 +183,7 @@ function Battles() {
                   className="text-2xl text-[#7C8BA1]"
                 ></span>
                 <span id="pontosStartup2" className="text-2xl mb-4"></span>
-                <Checkbox id="s2"></Checkbox>
+                <Checkbox id="s2" l1="b1" l2="b2" l3="b3" l4="b4" l5="b5"></Checkbox>
               </div>
             </div>
             <div className="w-full flex justify-center">
