@@ -28,11 +28,6 @@ public class TournamentController {
         return tournamentService.getStartups();
     }
 
-    @GetMapping("/rounds")
-    public ArrayList<Round> getRounds(){
-        return tournamentService.getRounds();
-    }
-
     @GetMapping("/battles")
     public ArrayList<Battle> getBattles(){
         return tournamentService.getBattles(tournamentService.getRounds().getLast());

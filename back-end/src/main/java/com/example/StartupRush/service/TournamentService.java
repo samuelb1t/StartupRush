@@ -24,7 +24,6 @@ public class TournamentService {
     private Map<String,StartupStats> stats = new HashMap<>();
 
     public Map<String, StartupStats> getStats() {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         return stats;
     }
 
@@ -68,15 +67,6 @@ public class TournamentService {
 
     public ArrayList<Battle> getBattles(Round round){
         return round.getBattles();
-    }
-
-    public Round getRound(int id) {
-        for (Round round : tournament.getRounds()) {
-            if (round.getId() == id) {
-                return round;
-            }
-        }
-        return null;
     }
 
     public boolean startRound(){
