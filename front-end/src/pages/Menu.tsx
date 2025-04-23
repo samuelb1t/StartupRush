@@ -9,9 +9,8 @@ function Menu() {
     const response = await fetch("http://localhost:8080/tournament/new", {
       method: "POST",
     });
-    if (response.ok) {
-      navigate("/register");
-    }
+
+    navigate("/register");
   }
 
   return (
@@ -27,7 +26,9 @@ function Menu() {
           </button>
           <button
             className="text-2xl bg-[#002790] hover:bg-[#001B64] duration-200 px-16 py-6 cursor-pointer rounded-2xl"
-            onClick={()=>{navigate("/history")}}
+            onClick={() => {
+              navigate("/history");
+            }}
           >
             Histórico
           </button>
